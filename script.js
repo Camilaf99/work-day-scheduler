@@ -16,6 +16,23 @@ function turnHourToString(currentHour) {
 }
 
 var tasksForDay = ["", "", "", "", "", "", "", "", ""];
+var lastHourChecked;
+
+function colorCalendar() {
+    let currentHour = moment().hour(); // [0-23] 
+    if(currentHour !== lastHourChecked) {
+        for(var hourTask = 9; hourTask <= 17; hourTask = hourTask + 1) { // [9-17]
+            if(hourTask < currentHour) {
+                document.getElementById("task_" + (hourTask - 9)).style.backgroundColor = 'lightgray';
+            } else if(hourTask === currentHour) {
+                document.getElementById("task_" + (hourTask - 9)).style.backgroundColor = 'red';
+            } else {
+                document.getElementById("task_" + (hourTask - 9)).style.backgroundColor = 'lime';
+            }
+        }
+        lastHourChecked = currentHour;
+    }
+}
 
 function renderHourlyTasks(tasks) {
     let scheduleElement = document.getElementById("schedule");
@@ -59,10 +76,20 @@ function saveTask(taskIndex) {
     storeIntoLocalStorage(getCurrentDateForLocalStorage(), tasksForDay);
 }
 
+var timer; 
+
+var stopInterval = function() {
+   clearInterval(timer);
+}  
+
+window.onclose = stopInterval();
+
 function init() {
     todaysDate();
     tasksForDay = retrieveFromLocalStorage(getCurrentDateForLocalStorage());
     renderHourlyTasks(tasksForDay);
+    colorCalendar();
+    timer = setInterval(colorCalendar, 1000);
 }
 
 init();
