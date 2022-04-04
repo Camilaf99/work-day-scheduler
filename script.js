@@ -15,7 +15,7 @@ function turnHourToString(currentHour) {
     return currentHourText;
 }
 
-var tasksForDay = ["Have breakfast", "", "", "", "Lunch with friends", "", "Send paperwork to Tommy", "", ""];
+var tasksForDay = ["", "", "", "", "", "", "", "", ""];
 
 function renderHourlyTasks(tasks) {
     let scheduleElement = document.getElementById("schedule");
@@ -59,16 +59,10 @@ function saveTask(taskIndex) {
     storeIntoLocalStorage(getCurrentDateForLocalStorage(), tasksForDay);
 }
 
-todaysDate();
-renderHourlyTasks(tasksForDay);
+function init() {
+    todaysDate();
+    tasksForDay = retrieveFromLocalStorage(getCurrentDateForLocalStorage());
+    renderHourlyTasks(tasksForDay);
+}
 
-
-
-//let currentSchedule = {
-//    tasks: tasksForDay
-//}
-//window.localStorage.setItem("04032022", JSON.stringify(currentSchedule));
-//JSON.parse(window.localStorage.getItem("04032022"))
-
-// Key:   04032022
-// Value: ["", "", ""]
+init();
